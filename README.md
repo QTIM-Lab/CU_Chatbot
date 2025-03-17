@@ -7,5 +7,6 @@ docker compose up --build
 ```
 
 ```bash
-curl http://localhost:8000
+$ curl http://localhost:8000
+{"message":"Hello, FastAPI in Docker!"}
 ```
