@@ -4,8 +4,8 @@ services:
   fastapi:
     build: .
     ports:
-      - "8000:8000"
+      - "${PORT}:${PORT}"
     volumes:
       - ./app:/app
-    environment:
-      - PYTHONUNBUFFERED=1
+    env_file: ".env"
+    command: uvicorn main:app --host ${HOST} --port ${PORT}

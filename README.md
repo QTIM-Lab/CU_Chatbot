@@ -7,6 +7,11 @@ docker compose up --build
 ```
 
 ```bash
-$ curl http://localhost:8000
+cp .env_sample .env
+```
+
+```bash
+source .env
+$ curl http://$HOST:$PORT
 {"message":"Hello, FastAPI in Docker!"}
 ```
