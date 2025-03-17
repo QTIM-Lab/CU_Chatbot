@@ -1,13 +1,12 @@
 # CU_Chatbot
 Azure based ChatGPT backed app,
 
-
 ```bash
-docker compose up --build
+cp .env_sample .env
 ```
 
 ```bash
-cp .env_sample .env
+docker compose up --build
 ```
 
 ```bash
