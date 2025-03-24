@@ -14,4 +14,4 @@ Once logged in, run the Gradio app with
 
 `python app.py`
 
-To change Gradio's default port, add `server_port=<new port>` when in the `launch()` method of the Gradio interface.
+To change Gradio's default port, add `server_port=<new port>` in the `launch()` method of the Gradio interface.
