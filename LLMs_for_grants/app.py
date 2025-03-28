@@ -11,8 +11,7 @@ from my_vertexai import VertexAI
 from my_openai import OpenAI_Model
 from my_ollama import OllamaModel
 from document_handling import create_chroma_db_from_file
-from langchain_community.vectorstores import Chroma
-
+from auth import check_auth
 def chat_with_model(message, history, model):
     """Chat with the model"""
     return model(message, history)
@@ -49,4 +48,6 @@ if __name__ == '__main__':
         # chatbot = gr.Chatbot(type="messages")
         gr.ChatInterface(fn=chat_fn, type="messages",additional_inputs=[rfa, sa])
     
-demo.launch()
+demo.launch(auth=check_auth)
+# for CCTSI machine
+# demo.launch(server_port=443, auth=check_auth, server_name='pccweb1016.ucdenver.pvt', ssl_verify=False, ssl_keyfile='key.pem', ssl_certfile='cert.pem')
