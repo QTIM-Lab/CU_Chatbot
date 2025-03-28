@@ -15,6 +15,8 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 RUN pip install --no-cache-dir gradio
 RUN pip install --upgrade google-cloud-aiplatform
 RUN pip install pandas tqdm google-auth openai azure-identity ollama dotenv
+RUN pip install langchain-community pypdf 
+RUN pip install -qU langchain-ollama langchain-chroma langchain_openai
 
 EXPOSE 7860
 ENV GRADIO_SERVER_NAME="0.0.0.0"
