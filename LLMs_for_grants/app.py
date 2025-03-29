@@ -45,6 +45,8 @@ if __name__ == '__main__':
         gr.Markdown("## NIH Grant Proposal Chatbot")
         rfa = gr.File(label="Upload RFA", file_types=[".pdf"])
         sa = gr.File(label="Upload Specific Aims", file_types=[".pdf"])
+        rfa.upload(fn=chat_fn.reset_prompt)
+        sa.upload(fn=chat_fn.reset_prompt)
         # chatbot = gr.Chatbot(type="messages")
         gr.ChatInterface(fn=chat_fn, type="messages",additional_inputs=[rfa, sa])
     

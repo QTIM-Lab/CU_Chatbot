@@ -26,7 +26,8 @@ class OpenAI_Model:
         )
         self.deployment_id = deployment_id
         self.loaded_pdfs = False
-        self.prompt = prompt
+        self.system_prompt = prompt
+        self.prompt = None
 
     def initialize_rag(self, file_path: str):
         """Initialize the RAG database"""
@@ -40,8 +41,12 @@ class OpenAI_Model:
         loader = PyPDFLoader(sa) 
         sa_text = "\n".join([doc.page_content for doc in loader.load()])
 
-        self.prompt = self.prompt.format(rfa=rfa_text, sa=sa_text)
+        self.prompt = self.system_prompt.format(rfa=rfa_text, sa=sa_text)
         # self.prompt = self.prompt.format(sa=sa_text)
+    
+    def reset_prompt(self):
+        """Reset the system prompt"""
+        self.loaded_pdfs = False
 
     def __call__(self, message, history, rfa: str, sa: str):
         """Interaction with OpenAI model"""
