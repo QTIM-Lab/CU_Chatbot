@@ -8,9 +8,12 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.vectorstores import Chroma
 
 from document_handling import create_chroma_db_from_file
-class OpenAI_Model:
+from my_chatbot_model import ChatbotModel
 
-    def __init__(self, deployment_id: str = 'got-4o', prompt: str = ''):
+class OpenAI_Model(ChatbotModel):
+
+    def __init__(self, deployment_id: str = 'got-4o'):
+        super().__init__()
         default_credential = DefaultAzureCredential()
         token_provider = get_bearer_token_provider(
             default_credential, "https://cognitiveservices.azure.com/.default"
@@ -26,7 +29,6 @@ class OpenAI_Model:
         )
         self.deployment_id = deployment_id
         self.loaded_pdfs = False
-        self.system_prompt = prompt
         self.prompt = None
 
     def initialize_rag(self, file_path: str):
@@ -35,14 +37,26 @@ class OpenAI_Model:
 
     def initialize_system_prompt(self, rfa: str, sa: str):
         """Initialize the system prompt"""
-        loader = PyPDFLoader(rfa) 
-        rfa_text = "\n".join([doc.page_content for doc in loader.load()])
 
-        loader = PyPDFLoader(sa) 
-        sa_text = "\n".join([doc.page_content for doc in loader.load()])
+        args = {'rfa': None, 'sa': None}
+        if rfa is not None:
+            loader = PyPDFLoader(rfa) 
+            args['rfa'] = "\n".join([doc.page_content for doc in loader.load()])
 
-        self.prompt = self.system_prompt.format(rfa=rfa_text, sa=sa_text)
-        # self.prompt = self.prompt.format(sa=sa_text)
+        if sa is not None:
+            loader = PyPDFLoader(sa) 
+            args['sa'] = "\n".join([doc.page_content for doc in loader.load()])
+
+        if 'rfa' in args and 'sa' in args:
+            system_prompt = self.read_prompt('grant_rfa')
+        elif 'rfa' in args:
+            system_prompt = self.read_prompt('rfa')
+        elif 'sa' in args:
+            system_prompt = self.read_prompt('grant')
+        else:
+            raise ValueError('No valid documents provided')
+
+        self.prompt = system_prompt.format(**args)
     
     def reset_prompt(self):
         """Reset the system prompt"""
